@@ -18,6 +18,10 @@ class Users(commands.Cog):
         users.delete_one({"id": member.id})
         print(f'Removed account for {member.display_name}.')
     
+    # Creates an account for the member given
+    # Args:
+    #   member: 
+    #       The member to create an account for.
     @commands.command()
     async def create(self, ctx, member: discord.Member=None):
         new_user = {"id": member.id, "exp": 0, "level": 0, "money": 100, "items": []}
