@@ -3,13 +3,13 @@ import os
 import discord
 from discord.ext import commands
 
-import bot_settings
+import bot_settings as settings
 
 # Discord variables
-TOKEN = bot_settings.token
-BOT = commands.Bot(command_prefix='$')
+TOKEN = settings.token
+BOT = commands.Bot(command_prefix=settings.command_prefix)
 BOT.remove_command('help')
-rich_presence = 'Listening for $'
+rich_presence = f'Listening for {settings.command_prefix}'
 
 # Client events
 @BOT.event
