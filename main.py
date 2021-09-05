@@ -3,8 +3,10 @@ import os
 import discord
 from discord.ext import commands
 
+import bot_settings
+
 # Discord variables
-TOKEN = 'NzkwNzI5NTI4ODM3NTM3ODEy.X-E2Qg.0abQ5tGW5T2OmjYdXF-RkUp1lRw'
+TOKEN = bot_settings.token
 BOT = commands.Bot(command_prefix='$')
 BOT.remove_command('help')
 rich_presence = 'Listening for $'
