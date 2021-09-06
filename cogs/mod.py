@@ -14,9 +14,9 @@ class Moderator(commands.Cog):
     @commands.command(name="clear")
     @commands.has_permissions(manage_messages=True)
     async def _clear(self, ctx: discord.TextChannel, ammount:int=10):
-        if ammount < 50:
+        if ammount <= 50:
             await ctx.channel.purge(limit=ammount)
-            await ctx.send(f"Deleted {ammount} messages!", delete_after=10.0)
+            await ctx.send(f"Deleted {ammount} messages!", delete_after=3.0)
         else:
             embed = discord.Embed(title="Error!", color=discord.Color.red())
             embed.add_field(name="Error Message: ", value="Unable to delete more than 50 messages!")
