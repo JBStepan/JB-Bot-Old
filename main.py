@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 
 import bot_settings as settings
+import web_dashboard.web_dash as dash
 
 # Discord variables
 TOKEN = settings.token
@@ -16,6 +17,7 @@ rich_presence = f'Listening for {settings.command_prefix}'
 async def on_ready():
     print('\n')
     print('Bot as started')
+    dash.start_dash(BOT)
     await BOT.change_presence(activity=discord.Game(name=rich_presence))
 
 #############

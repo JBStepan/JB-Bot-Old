@@ -35,8 +35,10 @@ class Fun(commands.Cog):
         embed = discord.Embed(color=Color.gold())
         if flip == 0:
             embed.title = "It was heads! :coin:"
+            print("Heads")
         elif flip == 1:
             embed.title = "It was tails! :coin:"
+            print("Tails")
         await ctx.send(embed=embed)
 
 def setup(bot):
