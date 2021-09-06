@@ -22,7 +22,7 @@ class AutoMod(commands.Cog):
                     await message.delete()
                     new_infraction = user_account['mod-infractions'] + 1
                     users.update_one({"id": message.author.id}, {"$set":{'mod-infractions':new_infraction}})
-                    await message.channel.send(f"{message.author.mention} watch you profanity!")
+                    await message.channel.send(f"{message.author.mention} watch you profanity!", delete_after=10.0)
                     break
     
     # Removes an infraction from the given user
