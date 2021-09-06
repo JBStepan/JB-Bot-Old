@@ -1,5 +1,5 @@
+![Happy Pepe](images/PepeHappy.png)<br>
 # JB Bot
-![Happy Pepe](images/HappyPepe.png)
 A Discord bot made by JB Stepan.
 
 > While looking around the `discord.py` Github I found and `ui` folder with what looks like discord components. I will look deeper into this, and make changes in needed.
