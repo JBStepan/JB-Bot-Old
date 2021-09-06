@@ -16,3 +16,4 @@ A Discord bot made by JB Stepan.
 - [ ] **0.1.2** - TBD
 
 [.](https://discord.gg/HYPVwxCPKB)
+ 
