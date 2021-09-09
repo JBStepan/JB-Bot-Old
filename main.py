@@ -1,6 +1,5 @@
 import os
 
-import discord
 from discord.ext import commands
 
 import bot_settings as settings
@@ -17,8 +16,8 @@ rich_presence = f'Listening for {settings.command_prefix}'
 async def on_ready():
     print('\n')
     print('Bot as started')
-    dash.start_dash(BOT)
-    await BOT.change_presence(activity=discord.Game(name=rich_presence))
+    #dash.start_dash(BOT)
+    #await BOT.change_presence(activity=discord.Game(name=rich_presence))
 
 #############
 for filename in os.listdir('./cogs'):

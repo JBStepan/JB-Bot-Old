@@ -2,7 +2,7 @@
 # JB Bot
 A Discord bot made by JB Stepan.
 
-> While looking around the `discord.py` Github I found and `ui` folder with what looks like discord components. I will look deeper into this, and make changes in needed.
+> I will start migrating from discord.py to Pycord
 
 ## To-Do
 - [x] Skeleton of `users.py`

@@ -15,8 +15,9 @@ class Moderator(commands.Cog):
     #       The ammount of messages you would like to delete.
     @commands.command(name="clear")
     @commands.has_permissions(manage_messages=True)
-    async def _clear(self, ctx: discord.TextChannel, ammount:int=10):
+    async def _clear(self, ctx: commands.Context, ammount:int=10):
         if ammount <= 50:
+            await ctx.message.delete()
             await ctx.channel.purge(limit=ammount)
             await ctx.send(f"Deleted {ammount} messages!", delete_after=3.0)
         else:
