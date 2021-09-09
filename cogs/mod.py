@@ -1,4 +1,6 @@
+import re
 import discord
+from discord.errors import DiscordException
 from discord.ext import commands
 
 from bot_settings import *
@@ -30,11 +32,13 @@ class Moderator(commands.Cog):
     #       The reason you warned the person.
     @commands.command(name="warn")
     @commands.has_role("Staff")
-    async def _warn(self, ctx, member: discord.Member, reason: str="None given"):
+    async def _warn(self, ctx: commands.Context, member: discord.Member, reason: str="None given"):
         # Get the users account data
         user_account = users.find_one({"id": member.id})
-        new_infraction = user_account['mod-infractions'] + 1
-        users.update_one({"id": member.id}, {"$set":{'mod-infractions':new_infraction}})
+        new_infraction = user_account['mod-infraction-count'] + 1
+        new_infraction_details = (reason, ctx.author.display_name)
+        users.update_one({"id": member.id}, {"$set":{'mod-infraction-count':new_infraction}})
+        users.update_one({"id": member.id}, {"$push":{"mod-infractions": new_infraction_details}})
 
         # Create warning DM
         embed = discord.Embed(title="You have been warned!", color=discord.Color.blue())
@@ -51,6 +55,10 @@ class Moderator(commands.Cog):
         embed.add_field(name="Reason: ", value=f"`{reason}`", inline=False)
         await spam_logs.send(embed=embed)
 
+    @commands.command(name="kick")
+    async def _kick(self, ctx: commands.Context, member: discord.Member, reason: str="None given"):
+        await member.kick(reason=reason)
+        await member.send(f"You have been kicked! For: {reason}")
 
 def setup(bot):
     bot.add_cog(Moderator(bot))

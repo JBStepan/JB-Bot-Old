@@ -13,7 +13,7 @@ class Users(commands.Cog):
         print(f'Removed account for {member.display_name}.')
     
     def create_user(self, member: discord.Member):
-        new_user = {"id": member.id, "exp": 0, "level": 0, "money": 100, "items": [], "mod-infractions": 0}
+        new_user = {"id": member.id, "exp": 0, "level": 0, "money": 100, "items": [], "mod-infractions": [], "mod-infraction-count": 0}
         users.insert_one(new_user)
         print(f'Created account for {member.display_name}.')
 

@@ -24,4 +24,22 @@ def start(init_bot: commands.Bot, port: int=5000):
 
 @app.route("/")
 def index():
-    return render_template("index.html", command_prefix=command_prefix, server_name=jb_world_server.name, roles=jb_world_server.roles)
+    return render_template("index.html")
+
+@app.route("/sendmessage", methods=["GET", "POST"])
+def send_message():
+    if request.method == "POST":
+        req = request.form
+        
+        roleid = request.form["role"]
+        content = request.form["content"]
+
+        for role in jb_world_server.roles:
+            if role.id == roleid:
+                for member in role.members:
+                    dm = member.create_dm()
+                    dm.send(content=content)
+        
+        return redirect(url_for("send_message"))
+
+    return render_template("send_message.html")
