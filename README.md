@@ -15,5 +15,5 @@ A Discord bot made by JB Stepan.
 - [ ] **0.1.0** - I want the skeletons of `users.py`, `auto_mod.py`, `mod.py`, `econ.py` and `fun.py` done
 - [ ] **0.1.2** - TBD
 
-[.](https://discord.gg/HYPVwxCPKB)
+[My Server](https://discord.gg/HYPVwxCPKB)(no one is in it!)
  
