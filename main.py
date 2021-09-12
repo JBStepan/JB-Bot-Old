@@ -1,9 +1,9 @@
 import os
-
+import discord
 from discord.ext import commands
 
 import bot_settings as settings
-import web_dashboard.web_dash as dash
+import web_dashboard.web_dash as webdash
 
 # Discord variables
 TOKEN = settings.token
@@ -16,11 +16,11 @@ rich_presence = f'Listening for {settings.command_prefix}'
 async def on_ready():
     print('\n')
     print('Bot as started')
-    #dash.start_dash(BOT)
-    #await BOT.change_presence(activity=discord.Game(name=rich_presence))
+    #webdash.start_dash(BOT)
+
 
 #############
-for filename in os.listdir('./cogs'):
+for filename in os.listdir('C:/Users/wayne/Desktop/Jakob2/JB Programs/JB Bot/cogs'):
     if filename.endswith('.py'):
         BOT.load_extension(f'cogs.{filename[:-3]}')
         print('Loaded cog file ' + filename)

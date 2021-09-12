@@ -1,5 +1,7 @@
 import discord
+from discord import user
 from discord.ext import commands
+from discord.ext.commands.core import command, cooldown
 
 from bot_settings import *
 
