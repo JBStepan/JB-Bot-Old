@@ -12,7 +12,7 @@ async def on_connect():
     print("Bot online!")
 
 # Loading cogs
-for i in range(len(COGS)):
-    COGS[i].setup(BOT)
+# for i in range(len(COGS)):
+#     COGS[i].setup(BOT)
 
 BOT.run(token=config.TOKEN)
