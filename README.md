@@ -5,7 +5,7 @@ A Discord bot made by JB Stepan.
 > I will start migrating from discord.py to Pycord
 
 ## To-Do
-- [x] Skeleton of `users.py`
+- [ ] Skeleton of `users.py`
 - [ ] Skeleton of `automod.py`
 - [ ] Skeleton of `mod.py`
 - [ ] Skeleton of `econ.py`
