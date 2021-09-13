@@ -2,8 +2,7 @@
 # JB Bot
 A Discord bot made by JB Stepan.
 
-> I will start migrating from discord.py to Pycord
-
+> I have started migrating over to Pycord
 ## To-Do
 - [ ] Skeleton of `users.py`
 - [ ] Skeleton of `automod.py`
