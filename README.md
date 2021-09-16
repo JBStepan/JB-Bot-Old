@@ -11,5 +11,5 @@ A Discord bot made by JB Stepan.
 - [ ] Skeleton of `fun.py`
 - [ ] Skeleton of `music.py`
 
-[.](https://discord.gg/HYPVwxCPKB)
+[.](https://discord.gg/nV44whXFtH)
  
