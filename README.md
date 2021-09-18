@@ -9,7 +9,6 @@ A Discord bot made by JB Stepan.
 - [ ] Skeleton of `mod.py`
 - [ ] Skeleton of `econ.py`
 - [ ] Skeleton of `fun.py`
-- [ ] Skeleton of `music.py`
 
 [.](https://discord.gg/jwRMTpfEUS)
  
