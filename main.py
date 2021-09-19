@@ -1,15 +1,16 @@
 # Pycord
-import pycord
-from pycord.ext import commands
+import discord
+from discord.ext import commands
 
 import config
 
 # Cogs
 import cogs.user as users
 import cogs.mod as mod
+import cogs.econ as econ
 
-BOT = commands.Bot(command_prefix=config.PREFIX, description="A bot for me and my friends\' Discords.")
-COGS = [users, mod]
+BOT = commands.Bot(command_prefix=config.PREFIX, description="The offical bot of JB\'s Rift Discord server and JB Stepan")
+COGS = [users, mod, econ]
 
 @BOT.event
 async def on_connect():
