@@ -10,5 +10,5 @@ A Discord bot made by JB Stepan.
 - [ ] Skeleton of `econ.py`
 - [ ] Skeleton of `fun.py`
 
-[.](https://discord.gg/jwRMTpfEUS)
+[My Discord](https://discord.gg/jwRMTpfEUS)
  
