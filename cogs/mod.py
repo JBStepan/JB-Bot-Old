@@ -62,38 +62,28 @@ class Moderator(commands.Cog):
     @commands.command(name='ban')
     async def _ban(self, ctx: commands.Context, member: discord.Member, delete_message_days: int=1, *, args):
         """Bans the given user for a given reason"""
-        # Asks for the if the they do want to ban the person
-        view = Confirm()
-        await ctx.send(f"Are you sure you want to ban {member.display_name}?", view=view)
+        # Do some behind the scenes stuff
+        await member.ban(delete_message_days=delete_message_days, reason=args)
+        ban_id = uuid.uuid1()
+        await User.give_ban(member, ctx.author, args, ban_id)
 
-        await view.wait()
-        # If the view times out
-        if view.value is None:
-            await ctx.send("Timed out!")
-        elif view.value:
-            # Do some behind the scenes stuff
-            await member.ban(delete_message_days=delete_message_days, reason=args)
-            ban_id = uuid.uuid1()
+        # Messages
+        ctx_embed = discord.Embed(title=f"{ctx.author.display_name} has banned {member.display_name}", color=discord.Color.red())
+        ctx_embed.set_thumbnail(url=member.display_avatar.url)
+        ctx_embed.add_field(name='Delete Message Days', value=delete_message_days, inline=False)
+        ctx_embed.add_field(name='Reason: ', value=args)
+        ctx_embed.add_field(name='User id: ', value=member.id)
 
-            # Messages
-            ctx_embed = discord.Embed(title=f"{ctx.author.display_name} has banned {member.display_name}", color=discord.Color.red())
-            ctx_embed.set_thumbnail(url=member.display_avatar.url)
-            ctx_embed.add_field(name='Delete Message Days', value=delete_message_days, inline=False)
-            ctx_embed.add_field(name='Reason: ', value=args)
-            ctx_embed.add_field(name='User id: ', value=member.id)
+        embed = discord.Embed(title=f"You have been banned!", color=discord.Color.red())
+        embed.add_field(name="Reason: ", value=args, inline=False)
+        embed.add_field(name="Banned by: ", value=ctx.author.display_name)
+        embed.add_field(name='Ban ID: ', value=str(ban_id), inline=False)
+        embed.set_footer(text = f'You can appeal a ban here: https://forms.gle/BWH6pJ9JLZLcoXUG9')
 
-            embed = discord.Embed(title=f"You have been banned!", color=discord.Color.red())
-            embed.add_field(name="Reason: ", value=args, inline=False)
-            embed.add_field(name="Banned by: ", value=ctx.author.display_name)
-            embed.add_field(name='Ban ID: ', value=str(ban_id), inline=False)
-            embed.set_footer(text = f'You can appeal a ban here: https://forms.gle/BWH6pJ9JLZLcoXUG9')
-
-            # Send the banned user a dm and send a message in the channel where the command was sent
-            banneddm = await member.create_dm()
-            await banneddm.send(embed=embed)
-            await ctx.send(embed=ctx_embed)
-        else:
-            await ctx.send("Cancelled!")
+        # Send the banned user a dm and send a message in the channel where the command was sent
+        banneddm = await member.create_dm()
+        await banneddm.send(embed=embed)
+        await ctx.send(embed=ctx_embed)
     
     @commands.command(name='kick')
     async def _kick(self, ctx: commands.Context, member: discord.Member, *, args):

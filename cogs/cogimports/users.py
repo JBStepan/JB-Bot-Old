@@ -1,3 +1,4 @@
+from datetime import datetime, tzinfo
 from typing import List
 import discord
 
@@ -6,6 +7,8 @@ from firebase_admin import credentials
 from firebase_admin import db
 
 from config import *
+
+import json
 
 cred = credentials.Certificate(firebase_cred)
 
@@ -79,7 +82,14 @@ class User():
         j = bank.get() + amount
 
         wallet.set(i)
-        wallet.set(j)
+        bank.set(j)
+    
+    async def buy_item(member: discord.Member, price: float):
+        wallet = db.reference(f'/{member.id}/econ-wallet')
+
+        i = wallet.get() - price
+
+        wallet.set(i)
 
     #########
     # Staff #
@@ -108,6 +118,21 @@ class User():
         ref = db.reference(f'/{user.id}/staff-account')
 
         ref.update({'rank': rank})
-    # Mod updates
-    async def give_ban(banned: discord.Member, banner: discord.Member, reason: str):
-        pass
+    
+    #########
+    # Staff #
+    #########
+    async def give_ban(banned: discord.Member, banner: discord.Member, reason: str, ban_id: str):
+        with open(BAN_JSON, 'r') as f:
+            bans = json.load(f)
+
+        if str(banner.id) not in bans:
+            time = datetime.now()
+            strtime = datetime.strftime(time, '%m/%d/%Y')
+            bans["bans"][str(banned.id)] = {'banner': banner.id, 'reason': reason, 'banid': str(ban_id), 'timeofban': strtime, 'bantimes': 1}
+        else:
+            bans["bans"][str(banned.id)]['bantimes'] += 1
+        
+        with open(BAN_JSON, 'w') as f:
+            json.dump(bans, f, indent=4)
+
