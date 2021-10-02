@@ -10,12 +10,13 @@ import cogs.econ as econ
 import cogs.member_config as verify
 import cogs.mod as mod
 import cogs.help as help
+import cogs.automod as automod
 
 import asyncio
 
 BOT = commands.Bot(command_prefix=config.PREFIX, description="The offical bot of JB\'s Rift Discord server and JB Stepan")
 BOT.remove_command('help')
-COGS = [users, econ, verify, mod, help]
+COGS = [users, econ, verify, mod, help, automod]
 
 @BOT.event
 async def on_connect():
