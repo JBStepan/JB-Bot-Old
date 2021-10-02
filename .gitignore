@@ -1,3 +1,4 @@
 # This file includes my bots token and other things very specific to my use case
 config.py
 __pycache__/bot_settings.cpython-39.pyc
+data/user.json
