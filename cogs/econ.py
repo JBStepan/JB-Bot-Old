@@ -92,7 +92,7 @@ class Economy(commands.Cog):
         embed = discord.Embed(title='Shop Item', color=discord.Color.green())
 
         for i in range(len(shop)):
-            embed.add_field(name=f'{shop[i].name} - ${str(shop[i].price)}', value=f'{shop[i].description}\n `{shop[i].id}`', inline=False)
+            embed.add_field(name=f'{shop[i].name} - ${str(shop[i].price)}', value=f'{shop[i].description}\n ID:`{shop[i].id}`', inline=False)
 
         await ctx.send(embed=embed)
 
@@ -105,6 +105,25 @@ class Economy(commands.Cog):
             await ctx.send(f'{ctx.author.display_name} just bought {item_to_buy.name}')
         else:
             await ctx.send('That item does not exist!')
+    
+    @commands.command(name='inventory', aliases=['inv', 'items'])
+    async def _inventory(self, ctx: commands.Context):
+        items = await User.get_bank_data(ctx.author)
+        if items.items:
+            em = discord.Embed(title=f"{ctx.author.display_name}'s Inventory")
+
+            k = await User.open_account(ctx.author)
+            bag = k["econ-items"]
+
+            for item in bag:
+                id = item["id"]
+                amount = item["amount"]
+
+                item = Item.get_item_from_string(id)
+
+                em.add_field(name=item.name, value=amount)
+
+            await ctx.send(embed=em)
     
     @commands.command(name='debugbuy')
     async def _debug_buy(self, ctx: commands.Context, item_id: str):

@@ -15,19 +15,22 @@ class Users(commands.Cog):
     @commands.command(name='createuser')
     async def _create_user(self, ctx: commands.Context, member: discord.Member):
         User.create_user(member)
+        print(f"Created account for {member.mention}")
         await ctx.send(f"Created account for {member.mention}")
     
     # Delete a user from the member given
     @commands.command(name='deleteuser')
     async def _delete_user(self, ctx: commands.Context, member: discord.Member):
         await User.delete_user(user=member)
-        ctx.send(f"Deleted account for {member.display_name}!")
+        print(f"Deleted account for {member.display_name}!")
+        await ctx.send(f"Deleted account for {member.display_name}!")
     
     # Add a member to the staff team
     @commands.command(name='addstaff')
     @commands.has_permissions(administrator=True)
     async def _add_staff(self, ctx: commands.Context, member: discord.Member):
         await User.create_staff_account(member)
+        print(f'Added {member.mention} to the staff team!')
         await ctx.send(f'Added {member.mention} to the staff team! <a:rave_parrot:886489050624692235>')
     
     # Promotes a staff member to the new rank
@@ -35,6 +38,7 @@ class Users(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def _promote_staff_member(self, ctx: commands.Context, member: discord.Member, rank: int):
         await User.promote_staff(member, rank)
+        print(f'Promoted {member.mention}!')
         await ctx.send(f'Promoted {member.mention}! <a:rave_parrot:886489050624692235>')
 
 def setup(bot):
