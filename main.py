@@ -22,6 +22,7 @@ COGS = [users, econ, verify, mod, help, automod]
 async def on_connect():
     print("\n")
     print("Bot online!")
+    print("-----------")
 
 async def change_presence():
     await BOT.wait_until_ready()
@@ -35,11 +36,17 @@ async def change_presence():
         await asyncio.sleep(10)
         await BOT.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='JB Music'))
         await asyncio.sleep(10)
+        await BOT.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="Economy Games"))
+        await asyncio.sleep(10)
+
 
 # Loading cogs
 for i in range(len(COGS)):
-    COGS[i].setup(BOT)
-    print(f"Loading cog: {COGS[i].get_name()}")
+    if COGS[i].enabled == True:
+        COGS[i].setup(BOT)
+        print(f"Loading cog: {COGS[i].get_name()}")
+    else:
+        print(f"Cog {COGS[i].get_name()} not enabled")
 
 BOT.loop.create_task(change_presence())
 BOT.run(token=config.TOKEN)

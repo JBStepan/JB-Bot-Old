@@ -1,11 +1,13 @@
 import datetime
 import discord
+from discord import role
 from discord.ext import commands
 
 # Other import
 from cogs.user import User
 
 COG_NAME = 'Economy'
+enabled = True
 
 # Cog classes
 class Item():
@@ -30,7 +32,7 @@ class Item():
     Item(0, 'example', 'Example Item', 100.00, 'Used for example', True, False)
     ```
     """
-    def __init__(self, type: int, id: str, name: str, price: float, description: str, canbedestroyed: bool, useable_item: bool, *, role=None, icon=None):
+    def __init__(self, type: int, id: str, name: str, price: float, description: str, canbedestroyed: bool, useable_item: bool, icon: str):
         self.type = type
         self.id = id
         self.name = name
@@ -38,20 +40,17 @@ class Item():
         self.description = description
         self.canbedestroyed = canbedestroyed
         self.useable_item = useable_item
-        if role != None:
-            self.role = role
-        if icon != None:
-            self.icon = icon
+        self.icon = icon
 
     def get_item_from_string(string: str):
         for i in range(len(shop)):
             if shop[i].id == string:
                 return shop[i]
 
-shop = [
-    Item(1, "goldrole", "Gold Role", 100.00, "Role of the Gold", canbedestroyed=False, useable_item=False, role=887826427074981949), 
-    Item(0, "watch", "Watch", 25.00, "Tells the time (24 hour format)", canbedestroyed=True, useable_item=True),
-    Item(1, "dj", "DJ Role", 1500.00, "Gives acsess to JB Music and MEE6 music commands.", False, True, role=886494118115680298)
+shop = [ 
+    Item(0, "watch", "Watch", 25.00, "Tells the time (24 hour format)", canbedestroyed=True, useable_item=True, icon=':watch:'),
+    Item(0, "ring", "Ring", 100.00, "A nice ring made with gold and diamonds. Used for a speical someone.", True, False, icon=":ring:"),
+    Item(0, "goldpepe", "Golden Pepe", 25000000000.00, "Only for the richest of the richest", True, True, icon='<:goldenpepe:894352501241950248> ')
 ]
 
 # Cog Class
@@ -92,16 +91,16 @@ class Economy(commands.Cog):
         embed = discord.Embed(title='Shop Item', color=discord.Color.green())
 
         for i in range(len(shop)):
-            embed.add_field(name=f'{shop[i].name} - ${str(shop[i].price)}', value=f'{shop[i].description}\n ID:`{shop[i].id}`', inline=False)
+            embed.add_field(name=f'{shop[i].icon}  **{shop[i].name}** — ${str(shop[i].price)}', value=f'{shop[i].description}', inline=False)
 
         await ctx.send(embed=embed)
 
-    @commands.command(name='buy')
+    @commands.command(name='buy', aliases=['purchase'])
     async def _buy(self, ctx: commands.Context, item_id: str):
         """Buys the given item"""
         item_to_buy = Item.get_item_from_string(item_id)
         if item_to_buy is not None:
-            await self.buy_item(item_to_buy, ctx.author, ctx)
+            await User.buy_item(ctx.author, item_to_buy.price, False, item_id)
             await ctx.send(f'{ctx.author.display_name} just bought {item_to_buy.name}')
         else:
             await ctx.send('That item does not exist!')
@@ -112,16 +111,9 @@ class Economy(commands.Cog):
         if items.items:
             em = discord.Embed(title=f"{ctx.author.display_name}'s Inventory")
 
-            k = await User.open_account(ctx.author)
-            bag = k["econ-items"]
-
-            for item in bag:
-                id = item["id"]
-                amount = item["amount"]
-
-                item = Item.get_item_from_string(id)
-
-                em.add_field(name=item.name, value=amount)
+            for key, value in items.items.items():
+                item = Item.get_item_from_string(key)
+                em.add_field(name=f"**{item.name}**", value=value, inline=False)
 
             await ctx.send(embed=em)
     
@@ -160,14 +152,11 @@ class Economy(commands.Cog):
     # Helper Functions
     async def buy_item(self, item: Item, member_buying: discord.Member, ctx: commands.Context):
         if item.type == 1:
-            role = discord.utils.find(lambda m: m.id == item.role, ctx.guild.roles)
-            await User.buy_item(ctx.author, item.price)
-            await member_buying.add_roles(role)
-        else:
-            await ctx.send('Debugging, only roles can be purchased now')
+            pass
     
     async def debug_buy_item(self, item: Item, member_buying: discord.Member, ctx: commands.Context):
         if item.type == 1:
+            role_ = item.id.upper()
             role = discord.utils.find(lambda m: m.id == item.role, ctx.guild.roles)
             await member_buying.add_roles(role)
         else:

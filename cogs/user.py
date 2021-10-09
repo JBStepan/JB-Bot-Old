@@ -3,6 +3,8 @@ from discord.ext import commands
 
 from cogs.cogimports.users import *
 
+enabled = True
+
 class Users(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot

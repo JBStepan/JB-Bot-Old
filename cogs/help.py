@@ -5,6 +5,7 @@ from discord.ext import commands
 import cogs.econ
 
 COG_NAME = 'Help'
+enabled = True
 
 # Cog variables
 help_accepted_perams = ["econ"]

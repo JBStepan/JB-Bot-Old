@@ -1,6 +1,7 @@
 from datetime import datetime
-from typing import List
+from typing import Dict
 import discord
+from discord import role
 
 from config import *
 
@@ -8,10 +9,11 @@ import json
 
 
 class EconAccount():
-    def __init__(self, wallet, bank, items) -> None:
+    def __init__(self, wallet, bank, roles, items: Dict) -> None:
         self.wallet = wallet
         self.bank = bank
         self.items = items
+        self.roles = roles
 
 class User():
     def __init__(self) -> None:
@@ -57,8 +59,18 @@ class User():
         wallet = users[str(member.id)]["econ-wallet"]
         bank = users[str(member.id)]["econ-bank"]
         items = users[str(member.id)]["econ-items"]
+        roles = users[str(member.id)]["econ-roles"]
 
-        return EconAccount(wallet, bank, items)
+        return EconAccount(wallet, bank, roles, items)
+
+    async def user_has_item(user: discord.User, item: str):
+        with open(USERS_JSON, 'r') as f:
+            users = json.load(f)
+        
+        if item in users[str(user.id)]["econ-items"]:
+            return True
+        else:
+            return False
     
     async def open_account(member: discord.Member):
         with open(USERS_JSON, 'r') as f:
@@ -74,8 +86,43 @@ class User():
     async def deposit_money(member: discord.Member, amount: float):
         pass
     
-    async def buy_item(member: discord.Member, price: float):
-        pass
+    async def buy_item(member: discord.Member, price: float, is_role: bool, item=None, role=None):
+        with open(USERS_JSON, 'r') as f:
+            users = json.load(f)
+
+        if item not in users[str(member.id)]["econ-items"]:
+            users[str(member.id)]["econ-wallet"] -= price
+            users[str(member.id)]["econ-items"][item] = 1
+        else:
+            users[str(member.id)]["econ-items"][item] += 1
+
+        with open(USERS_JSON, 'w') as f:
+            json.dump(users, f, indent=4)
+    
+    #######
+    # Fun #
+    #######
+    async def marry_users(user1: discord.User, user2: discord.User):
+        with open(MARRIAGE_JSON, 'r') as f:
+            users = json.load(f)
+
+        users[str(user1.id)] = {
+            "married": str(user2),
+            "level": 1,
+            "level-xp": 0,
+            "time": datetime.now()
+        }
+
+        users[str(user2.id)] = {
+            "married": str(user1),
+            "level": 1,
+            "level-xp": 0,
+            "time": datetime.now()
+        }
+
+        with open(MARRIAGE_JSON, 'w') as f:
+            json.dump(users, f, indent=4)
+
 
     #########
     # Staff #

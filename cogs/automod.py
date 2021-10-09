@@ -5,6 +5,7 @@ import config
 # Other import
 
 COG_NAME = 'Automod'
+enabled = True
 
 # Cog variables
 banned_words = ['fuck', 'shit']

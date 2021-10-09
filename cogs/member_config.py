@@ -6,6 +6,7 @@ from discord.ui import view
 # Other import
 
 COG_NAME = 'MemberConfig'
+enabled = True
 
 # Cog variables
 class VerifyButton(discord.ui.View):
