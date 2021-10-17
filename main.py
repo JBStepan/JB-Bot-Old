@@ -24,6 +24,12 @@ async def on_connect():
     print("Bot online!")
     print("-----------")
 
+@BOT.event
+async def on_command_error(ctx: commands.Context, exception):
+    if isinstance(exception, commands.CommandNotFound): 
+        em = discord.Embed(title=f"Error!", description=f"Command not found. Please use $help for avaible commands!", color=discord.colour.Color.red()) 
+        await ctx.send(embed=em)
+
 async def change_presence():
     await BOT.wait_until_ready()
 

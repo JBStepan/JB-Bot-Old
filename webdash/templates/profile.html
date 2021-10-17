@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+</head>
+<body>
+    {% if logged_in is false %}
+    <ul id="profile">
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+    </ul>
+    {% else %}
+    <ul id="profile">
+        <h1>{{ username }}</h1>
+        <img src='{{ avatar }}' />      
+        <p>You Wallet is: ${{ wallet_amount }}</p>
+        <p>You Bank is: ${{ bank_amount }}</p>
+    </ul>
+    {% endif %}
+</body>
+</html>

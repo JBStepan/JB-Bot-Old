@@ -3,14 +3,16 @@ from discord.ext import commands
 
 # Other import
 import cogs.econ
+import cogs.marriage
 
 COG_NAME = 'Help'
 enabled = True
 
 # Cog variables
-help_accepted_perams = ["econ"]
+help_accepted_perams = ["econ", "marriage"]
 help_plugins = {
-    "econ": cogs.econ.help_embed()
+    "econ": cogs.econ.help_embed(),
+    "marriage": cogs.marriage.help_embed()
 }
 
 # Cog Class
@@ -28,7 +30,7 @@ class Help(commands.Cog):
         elif plugin == "":
             embed_general = discord.Embed(title="JB Bot Plugin Commands")
             embed_general.add_field(name='**Economy**', value="`$help econ`")
-            embed_general.add_field(name='**Levels**', value="`$help levels`")
+            embed_general.add_field(name='**Marriage**', value="`$help marriage`")
             await ctx.send(embed=embed_general)
         else:
             embed_error = discord.Embed(description="**Error**: No plugin found!")

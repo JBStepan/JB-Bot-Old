@@ -36,7 +36,7 @@ def get_name():
 
 def help_embed():
     embed = discord.Embed(title="Econ Plugin", description="""
-    `$command`
-    A really cool command!
+    `$marry`
+    Get on one knee, and ask.
     """)
     return embed
