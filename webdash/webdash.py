@@ -15,7 +15,7 @@ os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 # Settings for your app
 base_discord_api_url = 'https://discordapp.com/api'
 client_id = r'790729528837537812' # Get from https://discordapp.com/developers/applications
-client_secret = 'K1Gbbg_owz8L9XDGbGiwic04MLqCrVaM'
+client_secret = ''
 redirect_uri='http://127.0.0.1:5000/oauth_callback'
 scope = ['identify', 'email', 'guilds']
 token_url = 'https://discordapp.com/api/oauth2/token'
