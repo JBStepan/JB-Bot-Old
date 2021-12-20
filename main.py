@@ -24,6 +24,10 @@ async def on_connect():
     print("Bot online!")
     print("-----------")
 
+@BOT.slash_command()
+async def hello(ctx):
+    ctx.send(f"Hello {ctx.author.display_name}")
+
 @BOT.event
 async def on_command_error(ctx: commands.Context, exception):
     if isinstance(exception, commands.CommandNotFound): 

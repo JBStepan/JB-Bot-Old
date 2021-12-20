@@ -1,12 +1,20 @@
 from datetime import datetime
 from typing import Dict
 import discord
-from discord import role
+import config
 
 from config import *
 
 import json
 
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+cred = credentials.Certificate(config.FIREBASE_CONFIG)
+firebase_admin.initialize_app(cred)
+
+db = firestore.client()
 
 class EconAccount():
     def __init__(self, wallet, bank, roles, items: Dict) -> None:
@@ -21,21 +29,30 @@ class User():
     
     # Database Functions
     def create_user(user: discord.Member):
-        with open(USERS_JSON, 'r') as f:
-            users = json.load(f)
         
-        users[str(user.id)] = {}
-        users[str(user.id)]["econ-bank"] = 0
-        users[str(user.id)]["econ-wallet"] = 100
-        users[str(user.id)]["econ-items"] = {}
-        users[str(user.id)]["leveling-level"] = 1
-        users[str(user.id)]["leveling-exp"] = 0
-        users[str(user.id)]["mod-amountkicks"] = 0
-        users[str(user.id)]["mod-amountwarns"] = 0
-        users[str(user.id)]["mod-amountmutes"] = 0
+        # users[str(user.id)] = {}
+        # users[str(user.id)]["econ-bank"] = 0
+        # users[str(user.id)]["econ-wallet"] = 100
+        # users[str(user.id)]["econ-items"] = {}
+        # users[str(user.id)]["leveling-level"] = 1
+        # users[str(user.id)]["leveling-exp"] = 0
+        # users[str(user.id)]["mod-amountkicks"] = 0
+        # users[str(user.id)]["mod-amountwarns"] = 0
+        # users[str(user.id)]["mod-amountmutes"] = 0
 
-        with open(USERS_JSON, 'w') as f:
-            json.dump(users, f, indent=4)
+        data = {
+            u"econ-bank": 0,
+            u"econ-wallet": 100,
+            u"econ-items": {},
+            u"leveling-level": 1,
+            u"leveling-exp": 0,
+            u"mod-amountkicks": 0,
+            u"mod-amountwarns": 0,
+            u"mod-amountmutes": 0,
+            u"staff-account": {}
+        }
+
+        db.collection(u'users').document(str(user.id)).set(data)
         
     
     async def delete_user(user: discord.Member):
@@ -135,18 +152,22 @@ class User():
         # 3 = Admin
         # 4 = Sr. Admin
         # 5 = Owner
-        with open(USERS_JSON, 'r') as f:
-            users = json.load(f)
         
-        users[str(user.id)]["staff-account"] = {} 
-        users[str(user.id)]["staff-account"]["rank"] = 0
-        users[str(user.id)]["staff-account"]["amount-bans"] = 0
-        users[str(user.id)]["staff-account"]["amount-kicks"] = 0
-        users[str(user.id)]["staff-account"]["amount-warns"] = 0
-        users[str(user.id)]["staff-account"]["amount-mutes"] = 0
+        # users[str(user.id)]["staff-account"] = {} 
+        # users[str(user.id)]["staff-account"]["rank"] = 0
+        # users[str(user.id)]["staff-account"]["amount-bans"] = 0
+        # users[str(user.id)]["staff-account"]["amount-kicks"] = 0
+        # users[str(user.id)]["staff-account"]["amount-warns"] = 0
+        # users[str(user.id)]["staff-account"]["amount-mutes"] = 0
 
-        with open(USERS_JSON, 'w') as f:
-            json.dump(users, f, indent=4)
+        user = db.collection(u'users').document(str(user.id))
+        user.update({u'staff-account': {
+            "rank": 0,
+            "amount-bans": 0,
+            "amount-kicks": 0,
+            "amount-warns": 0,
+            "amount-mutes": 0
+        }})
     
     async def promote_staff(user: discord.Member, rank: int):
        pass

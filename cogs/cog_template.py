@@ -28,7 +28,7 @@ def get_name():
     return COG_NAME
 
 def help_embed():
-    embed = discord.Embed(title="Econ Plugin", description="""
+    embed = discord.Embed(title="Template Pugin", description="""
     `$command`
     A really cool command!
     """)

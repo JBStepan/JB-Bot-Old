@@ -1,7 +1,11 @@
 import datetime
 import discord
 from discord import role
+from discord import colour
+from discord.embeds import Embed
 from discord.ext import commands
+from discord.commands import slash_command
+
 
 # Other import
 from cogs.user import User
@@ -69,6 +73,15 @@ class Economy(commands.Cog):
         embed = discord.Embed(title=f"{ctx.author.display_name}'s Balance", description=f"**Wallet**: ${account_data.wallet} \n **Bank**: ${account_data.bank}")
 
         await ctx.send(embed=embed)
+    
+    @commands.slash_command()
+    async def bal(self, ctx: commands.context):
+        """Shows the person how much money they have"""
+        account_data = await User.get_bank_data(member=ctx.author)
+
+        embed = discord.Embed(title=f"{ctx.author.display_name}'s Balance", description=f"**Wallet**: ${account_data.wallet} \n **Bank**: ${account_data.bank}")
+
+        await ctx.send(embed=embed)
 
     @commands.command(name='givemoney')
     @commands.has_permissions(manage_emojis=True)
@@ -91,7 +104,7 @@ class Economy(commands.Cog):
         embed = discord.Embed(title='Shop Item', color=discord.Color.green())
 
         for i in range(len(shop)):
-            embed.add_field(name=f'{shop[i].icon}  **{shop[i].name}** — ${str(shop[i].price)}', value=f'{shop[i].description}', inline=False)
+            embed.add_field(name=f'{shop[i].icon}  **{shop[i].name}** *{shop[i].id}* — ${str(shop[i].price)}', value=f'{shop[i].description}', inline=False)
 
         await ctx.send(embed=embed)
 
@@ -127,6 +140,12 @@ class Economy(commands.Cog):
         else:
             await ctx.send('That item does not exist!')
 
+    @commands.command(name='info')
+    async def _info(self, ctx: commands.Context, item_id: str):
+        item = Item.get_item_from_string(item_id)
+        e = discord.Embed(title=f"{item.icon} {item.name}", description=item.description, color=colour.Color.blue())
+        await ctx.send(embed=e)
+
     @commands.command(name='use')
     async def _use(self, ctx: commands.Context, item_id: str, action=None):
         """Uses the given specified item"""
@@ -134,6 +153,7 @@ class Economy(commands.Cog):
         item_to_user = Item.get_item_from_string(item)
         if item_to_user != None:
             if item_to_user.useable_item == True:
+                # Gets the item id and throws it into a if loop from what todo, maybe make functions for each item
                 if item_to_user.id == 'watch':
                     time = datetime.datetime.now()
                     strtime = datetime.datetime.strftime(time, "%H:%M")
