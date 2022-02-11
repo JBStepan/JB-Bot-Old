@@ -1,22 +1,20 @@
 # Pycord
 import discord
+from discord import activity
 from discord.ext import commands
+from discord.commands import slash_command
 
 import config
 
 # Cogs
-import cogs.user as users
-import cogs.econ as econ
-import cogs.member_config as verify
 import cogs.mod as mod
-import cogs.help as help
-import cogs.automod as automod
+#import cogs.help as help
 
 import asyncio
 
 BOT = commands.Bot(command_prefix=config.PREFIX, description="The offical bot of JB\'s Rift Discord server and JB Stepan")
 BOT.remove_command('help')
-COGS = [users, econ, verify, mod, help, automod]
+COGS = [mod]
 
 @BOT.event
 async def on_connect():
@@ -24,7 +22,7 @@ async def on_connect():
     print("Bot online!")
     print("-----------")
 
-@BOT.slash_command()
+@commands.slash_command(guild_ids=[881619826458648636, 883774092505940019])
 async def hello(ctx):
     ctx.send(f"Hello {ctx.author.display_name}")
 

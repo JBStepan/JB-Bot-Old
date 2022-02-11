@@ -6,16 +6,6 @@ import config
 from config import *
 
 import json
-
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
-
-cred = credentials.Certificate(config.FIREBASE_CONFIG)
-firebase_admin.initialize_app(cred)
-
-db = firestore.client()
-
 class EconAccount():
     def __init__(self, wallet, bank, roles, items: Dict) -> None:
         self.wallet = wallet
@@ -51,8 +41,6 @@ class User():
             u"mod-amountmutes": 0,
             u"staff-account": {}
         }
-
-        db.collection(u'users').document(str(user.id)).set(data)
         
     
     async def delete_user(user: discord.Member):
@@ -160,7 +148,6 @@ class User():
         # users[str(user.id)]["staff-account"]["amount-warns"] = 0
         # users[str(user.id)]["staff-account"]["amount-mutes"] = 0
 
-        user = db.collection(u'users').document(str(user.id))
         user.update({u'staff-account': {
             "rank": 0,
             "amount-bans": 0,

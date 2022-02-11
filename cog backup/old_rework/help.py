@@ -1,18 +1,17 @@
+from unicodedata import name
 import discord
 from discord.ext import commands
 
 # Other import
-import cogs.econ
 import cogs.marriage
 
 COG_NAME = 'Help'
 enabled = True
 
 # Cog variables
-help_accepted_perams = ["econ", "marriage"]
+help_accepted_perams = ["econ"]
 help_plugins = {
-    "econ": cogs.econ.help_embed(),
-    "marriage": cogs.marriage.help_embed()
+    
 }
 
 # Cog Class
@@ -25,15 +24,24 @@ class Help(commands.Cog):
     # Commands 
     @commands.command(name='help')
     async def _help(self, ctx: commands.Context, plugin: str=""):        
+        # If the plugin is in the plugin help list give the help embed
         if plugin in help_accepted_perams:
             await ctx.send(embed=help_plugins[plugin.lower()])
+        # Else give the user general help
         elif plugin == "":
+            # If the user has Trainee Mod role or above, send them this
             embed_general = discord.Embed(title="JB Bot Plugin Commands")
             embed_general.add_field(name='**Economy**', value="`$help econ`")
-            embed_general.add_field(name='**Marriage**', value="`$help marriage`")
             await ctx.send(embed=embed_general)
+
+            if ctx.author().guild_permissions.administrator == True:
+                mod_embed = discord.Embed(title="Moderator Commands")
+                mod_embed.add_field(name="**User Management**", value="`$help user`")
+                mod_embed.add_field(name="**Channel Management**", value="`$help channel`")
+                
+                await ctx.send(embed=mod_embed)
         else:
-            embed_error = discord.Embed(description="**Error**: No plugin found!")
+            embed_error = discord.Embed(description="**Error**: No plugin found!", color=discord.Color.red())
             await ctx.send(embed=embed_error)
             
 

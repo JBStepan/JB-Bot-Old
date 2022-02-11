@@ -8,7 +8,6 @@ COG_NAME = 'Automod'
 enabled = True
 
 # Cog variables
-banned_words = ['fuck', 'shit']
 
 def check_banned_words(message: str=None):
     for i in message.split():
