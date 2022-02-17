@@ -8,13 +8,15 @@ import config
 
 # Cogs
 import cogs.mod as mod
-#import cogs.help as help
+import cogs.fun as fun
+import cogs.help as help
+import cogs.automod as automod
 
 import asyncio
 
 BOT = commands.Bot(command_prefix=config.PREFIX, description="The offical bot of JB\'s Rift Discord server and JB Stepan")
 BOT.remove_command('help')
-COGS = [mod]
+COGS = [mod, fun, help, automod]
 
 @BOT.event
 async def on_connect():
@@ -22,29 +24,25 @@ async def on_connect():
     print("Bot online!")
     print("-----------")
 
-@commands.slash_command(guild_ids=[881619826458648636, 883774092505940019])
-async def hello(ctx):
-    ctx.send(f"Hello {ctx.author.display_name}")
-
 @BOT.event
 async def on_command_error(ctx: commands.Context, exception):
     if isinstance(exception, commands.CommandNotFound): 
-        em = discord.Embed(title=f"Error!", description=f"Command not found. Please use $help for avaible commands!", color=discord.colour.Color.red()) 
+        em = discord.Embed(title=f"Error!", description=f"Command not found. Please use >help for avaible commands!", color=discord.colour.Color.red()) 
         await ctx.send(embed=em)
 
 async def change_presence():
     await BOT.wait_until_ready()
 
     while not BOT.is_closed():
-        await BOT.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='for $'))
+        await BOT.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='for >'))
         await asyncio.sleep(10)
         await BOT.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='for bad words'))
         await asyncio.sleep(10)
         await BOT.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='chat'))
         await asyncio.sleep(10)
-        await BOT.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='JB Music'))
-        await asyncio.sleep(10)
         await BOT.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="Economy Games"))
+        await asyncio.sleep(10)
+        await BOT.change_presence(activity=discord.Activity(type=discord.ActivityType.streaming, name="Over the Internet"))
         await asyncio.sleep(10)
 
 
