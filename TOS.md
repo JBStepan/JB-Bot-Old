@@ -1,6 +1,3 @@
-## Terms
-This page covers the Terms of Service and the Prvicy Policy of any Discord Bot made by JB Stepan
-
 ## Terms of Service
 By inviting the bot to your server and useing it features you are agreeing to the Terms of Service and Privicy Policy(Terms).
 
