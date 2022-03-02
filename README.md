@@ -1,1 +1,2 @@
-![Happy Pepe](images/PepeHappy.png)<br>
+## JB Bot
+Dank Memer but better, maybe, dont @ me
